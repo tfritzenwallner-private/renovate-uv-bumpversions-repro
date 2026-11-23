@@ -1,0 +1,35 @@
+# Renovate 44.257.9 (renovate/renovate:44.257-full), platform=gitea (local), LOG_LEVEL=trace, branch renovate/six-1.x
+# Filtered to the branch-processing lines. Order: updateArtifacts (uv lock) -> bumpVersions -> commit.
+
+## Run A: bumpVersions on pyproject.toml only (bug)
+2026-11-23T08:03:50.878Z DEBUG manager.getUpdatedPackageFiles() reuseExistingBranch=false
+2026-11-23T08:03:50.896Z DEBUG updateArtifacts for updatedPackageFiles
+2026-11-23T08:03:50.902Z DEBUG Executing command command="uv lock --upgrade-package six"
+2026-11-23T08:03:51.508Z DEBUG exec completed stderr="Using CPython 3.14.10 interpreter at: /opt/containerbase/tools/python/3.14.10/bin/python3\nResolved 2 packages in 243ms\nUpdated six v1.16.0 -> v1.17.0\n"
+2026-11-23T08:03:51.511Z DEBUG Updated 1 package files
+2026-11-23T08:03:51.514Z DEBUG Updated 1 lock files updatedArtifacts=["uv.lock"]
+2026-11-23T08:03:51.526Z TRACE bumpVersions(Bump project.version): Compiled filePatterns
+2026-11-23T08:03:51.526Z TRACE bumpVersions(Bump project.version): Found 1 files to bump versions files=["pyproject.toml"]
+2026-11-23T08:03:51.530Z TRACE bumpVersions(Bump project.version): Compiled matchStrings matchStrings=["(?m)^version = \"(?<version>[^\"]+)\""]
+2026-11-23T08:03:51.535Z DEBUG 2 file(s) to commit
+2026-11-23T08:03:52.554Z INFO  Branch created
+# Result: pyproject.toml version 0.1.1, uv.lock root package 'example' still 0.1.0
+#   $ uv lock --check
+#   error: The lockfile at `uv.lock` needs to be updated, but `--check` was provided.
+
+## Run B: workaround, second bumpVersions entry on uv.lock
+2026-11-23T08:03:50.660Z DEBUG manager.getUpdatedPackageFiles() reuseExistingBranch=false
+2026-11-23T08:03:50.676Z DEBUG updateArtifacts for updatedPackageFiles
+2026-11-23T08:03:50.681Z DEBUG Executing command command="uv lock --upgrade-package six"
+2026-11-23T08:03:51.295Z DEBUG exec completed stderr="Using CPython 3.14.10 interpreter at: /opt/containerbase/tools/python/3.14.10/bin/python3\nResolved 2 packages in 233ms\nUpdated six v1.16.0 -> v1.17.0\n"
+2026-11-23T08:03:51.298Z DEBUG Updated 1 package files
+2026-11-23T08:03:51.300Z DEBUG Updated 1 lock files updatedArtifacts=["uv.lock"]
+2026-11-23T08:03:51.311Z TRACE bumpVersions(Bump project.version): Compiled filePatterns
+2026-11-23T08:03:51.311Z TRACE bumpVersions(Bump project.version): Found 1 files to bump versions files=["pyproject.toml"]
+2026-11-23T08:03:51.315Z TRACE bumpVersions(Bump project.version): Compiled matchStrings matchStrings=["(?m)^version = \"(?<version>[^\"]+)\""]
+2026-11-23T08:03:51.324Z TRACE bumpVersions(Bump the uv.lock root package): Compiled filePatterns
+2026-11-23T08:03:51.324Z TRACE bumpVersions(Bump the uv.lock root package): Found 1 files to bump versions files=["uv.lock"]
+2026-11-23T08:03:51.329Z TRACE bumpVersions(Bump the uv.lock root package): Compiled matchStrings matchStrings=["(?m)^version = \"(?<version>[^\"]+)\"\\nsource = \\{ (?:editable|virtual) = \"\\.\" \\}"]
+2026-11-23T08:03:51.333Z DEBUG 2 file(s) to commit
+2026-11-23T08:03:52.075Z INFO  Branch created
+# Result: pyproject.toml 0.1.1, uv.lock root package 0.1.1, uv lock --check exits 0

@@ -17,8 +17,17 @@ package is also `0.1.1`, so `uv lock --check` passes.
 
 ```text
 $ uv lock --check
-error: The lockfile at `uv.lock` needs to be updated, but `--check` was provided. ...
+error: The lockfile at `uv.lock` needs to be updated, but `--check` was provided.
 ```
 
 Cause: `processBranch` runs the artifact update (`uv lock --upgrade-package six`) before `bumpVersions`, so
 `uv lock` never sees the bumped version.
+
+Verified with Renovate 44.257.9 (`renovate/renovate:44.257-full`) against a local Gitea; trimmed log in
+`renovate-debug-excerpt.log`.
+
+## Workaround
+
+Branch `workaround`: a second `bumpVersions` entry bumps the root package in `uv.lock`
+(`(?m)^version = "(?<version>[^"]+)"\nsource = \{ (?:editable|virtual) = "\." \}`). With it, the Renovate
+branch has `0.1.1` in both files and `uv lock --check` passes.
