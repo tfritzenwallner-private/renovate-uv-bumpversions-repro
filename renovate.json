@@ -1,15 +1,33 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended"
+  ],
   "dependencyDashboard": false,
   "packageRules": [
     {
-      "matchManagers": ["pep621"],
+      "matchManagers": [
+        "pep621"
+      ],
       "bumpVersions": [
         {
           "name": "Bump project.version",
-          "filePatterns": ["pyproject.toml"],
-          "matchStrings": ["(?m)^version = \"(?<version>[^\"]+)\""],
+          "filePatterns": [
+            "pyproject.toml"
+          ],
+          "matchStrings": [
+            "(?m)^version = \"(?<version>[^\"]+)\""
+          ],
+          "bumpType": "patch"
+        },
+        {
+          "name": "Bump the uv.lock root package",
+          "filePatterns": [
+            "uv.lock"
+          ],
+          "matchStrings": [
+            "(?m)^version = \"(?<version>[^\"]+)\"\\nsource = \\{ (?:editable|virtual) = \"\\.\" \\}"
+          ],
           "bumpType": "patch"
         }
       ]
